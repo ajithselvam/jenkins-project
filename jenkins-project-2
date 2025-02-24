@@ -1,0 +1,73 @@
+Project 2: Deploy a Static HTML Page
+Goal: Build a pipeline to copy a simple HTML file to a web server directory (simulated locally).
+
+Steps:
+
+Create an HTML File:
+Create a file called index.html with this content:
+
+
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Welcome to My Jenkins Project</h1>
+    <p>This is a simple static page.</p>
+</body>
+</html>
+
+
+Optionally, push it to a Git repository.
+
+
+Set Up a Jenkins Pipeline:
+
+From the Jenkins dashboard, click New Item.
+Name it (e.g., "StaticPageDeploy"), select Pipeline, and click OK.
+
+Configure the Pipeline:
+Scroll to the Pipeline section.
+Choose Pipeline script and enter this:
+
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'echo "Building the project..."'
+                // If using Git, Jenkins will automatically clone the repo
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'mkdir -p /tmp/webserver'  // Simulate a web server directory
+                sh 'cp index.html /tmp/webserver/'
+                sh 'echo "Deployed to /tmp/webserver!"'
+            }
+        }
+    }
+    post {
+        always {
+            echo "Pipeline finished!"
+        }
+    }
+}
+
+
+
+If using Git, go to General, check GitHub project, and add your repo URL. Then, in Pipeline, set Definition to Pipeline script from SCM, select Git, and enter your repo URL with "Jenkinsfile" as the script path (you’d need to add this file to your repo with the script above).
+
+Run the Pipeline:
+Click Save, then Build Now.
+
+Check the Console Output to see the stages execute. After it runs, check /tmp/webserver/index.html on your system to confirm the file is there.
+
+
+Test It (Optional):
+If you have a local web server (e.g., Python’s http.server), navigate to /tmp/webserver and run:
+
+
+python3 -m http.server 8000
+Open http://localhost:8000 in your browser to see your page.
+
+What You’ll Learn: Setting up a pipeline, using stages, and simulating deployment.
