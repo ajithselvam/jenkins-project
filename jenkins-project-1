@@ -1,0 +1,55 @@
+Project 1: Build and Test a Simple "Hello World" Script
+Goal: Create a Jenkins job that runs a basic shell script and prints "Hello World" to the console, with a simple test to check its output.
+
+Steps:
+
+Create a Script:
+
+On your local machine or a server where Jenkins can access it, create a file called hello.sh.
+Add this content:
+
+
+#!/bin/bash
+echo "Hello World"
+
+Save it and make it executable: chmod +x hello.sh.
+
+Set Up a Git Repository (Optional):
+For a true CI experience, push hello.sh to a Git repository (e.g., GitHub). If you’re not ready for that, you can skip this and use a local file path later.
+
+Create a New Jenkins Job:
+
+Log in to your Jenkins dashboard (usually at http://localhost:8080 if running locally).
+
+Click New Item on the left.
+Enter a name (e.g., "HelloWorldProject"), select Freestyle project, and click OK.
+
+Configure the Job:
+Scroll to Source Code Management:
+If using Git, select Git and paste your repository URL (e.g., https://github.com/yourusername/yourrepo.git). Leave credentials empty if it’s public.
+If not using Git, skip this section.
+
+Scroll to Build Steps:
+Click Add build step and choose Execute shell.
+In the command box, enter:
+
+
+
+chmod +x hello.sh  # Ensure it’s executable
+./hello.sh         # Run the script
+if [ "$(./hello.sh)" == "Hello World" ]; then
+    echo "Test passed!"
+else
+    echo "Test failed!" && exit 1
+fi
+
+
+This runs the script and checks if the output matches "Hello World".
+
+Save and Run:
+
+Click Save, then Build Now from the project page.
+
+Check the Console Output (click the build number in the build history) to see "Hello World" and "Test passed!".
+
+What You’ll Learn: Basic job setup, executing shell commands, and simple testing in Jenkins.
