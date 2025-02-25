@@ -1,0 +1,72 @@
+Simple Jenkins Project: "Message Printer"
+Goal: Create a Jenkins job that runs a shell script to print "Jenkins is awesome!" and verifies the output.
+
+What You’ll Need:
+Jenkins installed (e.g., on http://localhost:8080 if local).
+A basic text editor to create a script.
+
+Optional: A Git repository if you want to pull the script from there.
+
+Steps:
+Create a Simple Shell Script:
+Open a text editor and create a file called message.sh.
+Add this content:
+
+
+#!/bin/bash
+echo "Jenkins is awesome!"
+
+Save it somewhere Jenkins can access (e.g., your local filesystem like /home/user/jenkins-projects/message.sh).
+Make it executable by running this in your terminal:
+
+chmod +x message.sh
+
+
+Optional: Use Git:
+If you want to practice with Git, create a repository (e.g., on GitHub), add message.sh, and push it. For simplicity here, I’ll assume you’re using a local file, but I can adjust if you prefer Git.
+
+
+Set Up the Jenkins Job:
+Open your Jenkins dashboard (e.g., http://localhost:8080).
+Click New Item on the left sidebar.
+Enter a name like "SimpleMessagePrinter".
+Select Freestyle project and click OK.
+
+
+Configure the Job:
+Scroll down to the Build section.
+Click Add build step and select Execute shell.
+In the command box, type:
+
+
+
+/path/to/your/message.sh  # Replace with the actual path, e.g., /home/user/jenkins-projects/message.sh
+if [ "$(/path/to/your/message.sh)" == "Jenkins is awesome!" ]; then
+    echo "Success: Message printed correctly!"
+else
+    echo "Error: Message didn’t match!" && exit 1
+fi
+
+
+This runs the script and checks if the output is correct. Replace /path/to/your/message.sh with wherever you saved it.
+
+
+Save and Test:
+Click Save at the bottom.
+On the project page, click Build Now.
+
+Once the build runs, click the build number (e.g., #1) in the Build History section, then select Console Output.
+You should see:
+
+
+Started by user [your-username]
+...
+Jenkins is awesome!
+Success: Message printed correctly!
+Finished: SUCCESS
+
+
+What This Does:
+The job runs your message.sh script.
+It checks the output to ensure it says "Jenkins is awesome!".
+If it matches, you get a success message; if not, the build fails (handy for learning how Jenkins handles pass/fail).
